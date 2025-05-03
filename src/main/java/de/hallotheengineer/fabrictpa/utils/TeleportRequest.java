@@ -1,9 +1,13 @@
 package de.hallotheengineer.fabrictpa.utils;
 
 import com.mojang.brigadier.context.CommandContext;
+import net.minecraft.network.packet.s2c.play.PositionFlag;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.TeleportTarget;
+
+import java.util.Set;
 
 public class TeleportRequest {
     protected final ServerPlayerEntity source;
@@ -20,7 +24,7 @@ public class TeleportRequest {
         }
     }
     protected void executeTeleport() {
-        source.teleport(target.getServerWorld(), target.getX(), target.getY(), target.getZ(), target.getYaw(), target.getPitch());
+        source.teleport(target.getServerWorld(), target.getX(), target.getY(), target.getZ(), Set.of(), target.getYaw(), target.getPitch(),false);
     }
     public void cancel() {}
 

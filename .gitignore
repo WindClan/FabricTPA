@@ -5,3 +5,4 @@
 .idea/*
 .idea
 .gradle/*
+remappedSrc/*
