@@ -22,14 +22,6 @@ public class TPCancelCommand {
                 return true;
             }
         }
-        for (TeleportRequest request : TeleportHandler.getTpaHereRequests()) {
-            if (request.getTarget() == context.getSource().getPlayerOrThrow()) {
-                request.cancel();
-                TeleportHandler.removeTPAHereRequest(request);
-                context.getSource().sendFeedback(() -> Text.literal("Your tpahere request to "+request.getSource().getName().getString()+" has been canceled").formatted(Formatting.GRAY), false);
-                return true;
-            }
-        }
         return false;
     }
 

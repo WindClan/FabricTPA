@@ -19,14 +19,7 @@ public class TPDenyCommand {
                 request.cancel();
                 TeleportHandler.removeTPARequest(request);
                 request.getSource().sendMessage(Text.literal("Your request was denied!").formatted(Formatting.RED));
-                return true;
-            }
-        }
-        for (TeleportRequest request : TeleportHandler.getTpaHereRequests()) {
-            if (request.getTarget() == context.getSource().getPlayerOrThrow() && (ownerUUID == null || ownerUUID.equals(request.getOwner().getUuidAsString()))) {
-                request.cancel();
-                TeleportHandler.removeTPAHereRequest(request);
-                request.getSource().sendMessage(Text.literal("Your request was denied!").formatted(Formatting.RED));
+                request.getTarget().sendMessage(Text.literal("Request denied.").formatted(Formatting.GRAY));
                 return true;
             }
         }

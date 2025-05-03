@@ -6,7 +6,8 @@
   "description": "Fabric TPA system",
   "authors": [
     "HalloTheEngineer",
-    "Featherwhisker"
+    "WindClan",
+    "Herr Katze"
   ],
   "license": "MIT",
   "environment": "server",
@@ -20,7 +21,6 @@
   },
   "mixins": [],
   "depends": {
-    "fabricloader": ">=${loader_version}",
     "fabric": "*",
     "minecraft": "${minecraft_version}"
   }

@@ -18,13 +18,8 @@ public class TPAcceptCommand {
             if (request.getTarget() == context.getSource().getPlayerOrThrow() && (ownerUUID == null || ownerUUID.equals(request.getOwner().getUuidAsString()))) {
                 request.run();
                 TeleportHandler.removeTPARequest(request);
-                return true;
-            }
-        }
-        for (TeleportRequest request : TeleportHandler.getTpaHereRequests()) {
-            if (request.getSource() == context.getSource().getPlayerOrThrow() && (ownerUUID == null || ownerUUID.equals(request.getOwner().getUuidAsString()))) {
-                request.run();
-                TeleportHandler.removeTPAHereRequest(request);
+                request.getSource().sendMessage(Text.literal("Your request was accepted!").formatted(Formatting.GREEN));
+                request.getTarget().sendMessage(Text.literal("Request accepted.").formatted(Formatting.GRAY));
                 return true;
             }
         }

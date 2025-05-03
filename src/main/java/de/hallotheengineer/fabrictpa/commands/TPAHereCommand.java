@@ -21,7 +21,7 @@ public class TPAHereCommand {
             source.sendFeedback(() -> Text.literal("You can't teleport to yourself").formatted(Formatting.RED), false);
             return -1;
         }
-        for (TeleportRequest request : TeleportHandler.getTpaHereRequests()) {
+        for (TeleportRequest request : TeleportHandler.getTpaRequests()) {
             if (request.getTarget() == player) {
                 source.sendFeedback(() -> Text.literal("You already have ongoing requests").formatted(Formatting.RED), false);
                 return -1;

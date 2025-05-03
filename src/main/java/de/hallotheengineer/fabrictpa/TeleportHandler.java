@@ -1,6 +1,7 @@
 package de.hallotheengineer.fabrictpa;
 
 import com.mojang.brigadier.context.CommandContext;
+import de.hallotheengineer.fabrictpa.utils.TeleportHereRequest;
 import de.hallotheengineer.fabrictpa.utils.TeleportRequest;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -13,7 +14,6 @@ import java.util.*;
 
 public class TeleportHandler {
     private static final List<TeleportRequest> tpaRequests = new ArrayList<>();
-    private static final List<TeleportRequest> tpaHereRequests = new ArrayList<>();
     public static void newAskReqest(ServerPlayerEntity source, ServerPlayerEntity target, CommandContext<ServerCommandSource> context) {
         TeleportRequest request = new TeleportRequest(source, target, context);
         tpaRequests.add(request);
@@ -28,8 +28,8 @@ public class TeleportHandler {
                 .formatted(Formatting.RED)));
     }
     public static void newAskHereReqest(ServerPlayerEntity source, ServerPlayerEntity target, CommandContext<ServerCommandSource> context) {
-        TeleportRequest request = new TeleportRequest(target, source, context);
-        tpaHereRequests.add(request);
+        TeleportRequest request = new TeleportHereRequest(source, target, context);
+        tpaRequests.add(request);
         target.sendMessage(Text.literal(source.getName().getString()+" wants you to teleport to them\n")
                 .formatted(Formatting.GREEN)
                 .append(Text.literal("[Accept]")
@@ -44,13 +44,7 @@ public class TeleportHandler {
     public static List<TeleportRequest> getTpaRequests() {
         return tpaRequests;
     }
-    public static List<TeleportRequest> getTpaHereRequests() {
-        return tpaHereRequests;
-    }
     public static void removeTPARequest(TeleportRequest request) {
         tpaRequests.remove(request);
-    }
-    public static void removeTPAHereRequest(TeleportRequest request) {
-        tpaHereRequests.remove(request);
     }
 }
