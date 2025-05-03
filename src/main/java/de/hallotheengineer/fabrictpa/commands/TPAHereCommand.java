@@ -22,7 +22,7 @@ public class TPAHereCommand {
             return -1;
         }
         for (TeleportRequest request : TeleportHandler.getTpaRequests()) {
-            if (request.getTarget() == player) {
+            if (request.getSource() == player) {
                 source.sendFeedback(() -> Text.literal("You already have ongoing requests").formatted(Formatting.RED), false);
                 return -1;
             }
