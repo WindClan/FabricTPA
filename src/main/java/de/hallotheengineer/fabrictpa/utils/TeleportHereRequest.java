@@ -14,6 +14,6 @@ public class TeleportHereRequest extends TeleportRequest {
 
     @Override
     protected void executeTeleport() {
-        this.target.teleport(target.getServerWorld(), source.getX(), source.getY(), source.getZ(), Set.of(), source.getYaw(), source.getPitch(), false);
+        this.target.teleport(target.getEntityWorld(), source.getX(), source.getY(), source.getZ(), Set.of(), source.getYaw(), source.getPitch(), false);
     }
 }

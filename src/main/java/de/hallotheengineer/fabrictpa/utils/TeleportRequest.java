@@ -24,7 +24,7 @@ public class TeleportRequest {
         }
     }
     protected void executeTeleport() {
-        source.teleport(target.getServerWorld(), target.getX(), target.getY(), target.getZ(), Set.of(), target.getYaw(), target.getPitch(),false);
+        source.teleport(target.getEntityWorld(), target.getX(), target.getY(), target.getZ(), Set.of(), target.getYaw(), target.getPitch(),false);
     }
     public void cancel() {}
 
