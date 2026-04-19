@@ -12,6 +12,6 @@ public class FabricTPA implements DedicatedServerModInitializer, ModInitializer 
 
     @Override
     public void onInitialize() {
-
+        onInitializeServer();
     }
 }

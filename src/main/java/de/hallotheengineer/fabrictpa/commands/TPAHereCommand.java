@@ -4,31 +4,30 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import de.hallotheengineer.fabrictpa.TeleportHandler;
 import de.hallotheengineer.fabrictpa.utils.TeleportRequest;
-import net.minecraft.command.argument.EntityArgumentType;
-import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
-import net.minecraft.world.dimension.DimensionTypes;
+import net.minecraft.ChatFormatting;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.arguments.EntityArgument;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 
 public class TPAHereCommand {
-    public static int exec(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
-        ServerPlayerEntity target = EntityArgumentType.getPlayer(context, "player");
-        ServerCommandSource source = context.getSource();
-        ServerPlayerEntity player = source.getPlayerOrThrow();
+    public static int exec(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+        ServerPlayer target = EntityArgument.getPlayer(context, "player");
+        CommandSourceStack source = context.getSource();
+        ServerPlayer player = source.getPlayerOrException();
 
         if (target == player) {
-            source.sendFeedback(() -> Text.literal("You can't teleport to yourself").formatted(Formatting.RED), false);
+            source.sendSuccess(() -> Component.literal("You can't teleport to yourself").withStyle(ChatFormatting.RED), false);
             return -1;
         }
         for (TeleportRequest request : TeleportHandler.getTpaRequests()) {
             if (request.getSource() == player) {
-                source.sendFeedback(() -> Text.literal("You already have ongoing requests").formatted(Formatting.RED), false);
+                source.sendSuccess(() -> Component.literal("You already have ongoing requests").withStyle(ChatFormatting.RED), false);
                 return -1;
             }
         }
         TeleportHandler.newAskHereReqest(player, target, context);
-        context.getSource().sendFeedback(() -> Text.literal("Teleport request sent to "+target.getName().getString()).formatted(Formatting.GRAY), false);
+        context.getSource().sendSuccess(() -> Component.literal("Teleport request sent to "+target.getName().getString()).withStyle(ChatFormatting.GRAY), false);
 
         return 1;
     }

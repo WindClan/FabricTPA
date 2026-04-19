@@ -4,21 +4,21 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import de.hallotheengineer.fabrictpa.TeleportHandler;
 import de.hallotheengineer.fabrictpa.utils.TeleportRequest;
-import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
+import net.minecraft.ChatFormatting;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.network.chat.Component;
 
 public class TPCancelCommand {
-    public static int exec(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
-        if (!checkRequests(context)) context.getSource().sendFeedback(() -> Text.literal("You have no teleport requests!").formatted(Formatting.RED), false);
+    public static int exec(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+        if (!checkRequests(context)) context.getSource().sendSuccess(() -> Component.literal("You have no teleport requests!").withStyle(ChatFormatting.RED), false);
         return 1;
     }
-    private static boolean checkRequests(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
+    private static boolean checkRequests(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         for (TeleportRequest request : TeleportHandler.getTpaRequests()) {
-            if (request.getSource() == context.getSource().getPlayerOrThrow()) {
+            if (request.getSource() == context.getSource().getPlayerOrException()) {
                 request.cancel();
                 TeleportHandler.removeTPARequest(request);
-                context.getSource().sendFeedback(() -> Text.literal("Your teleport request to "+request.getSource().getName().getString()+" has been canceled").formatted(Formatting.GRAY), false);
+                context.getSource().sendSuccess(() -> Component.literal("Your teleport request to "+request.getSource().getName().getString()+" has been canceled").withStyle(ChatFormatting.GRAY), false);
                 return true;
             }
         }

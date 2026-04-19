@@ -1,38 +1,34 @@
 package de.hallotheengineer.fabrictpa.utils;
 
 import com.mojang.brigadier.context.CommandContext;
-import net.minecraft.network.packet.s2c.play.PositionFlag;
-import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.TeleportTarget;
-
 import java.util.Set;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.server.level.ServerPlayer;
 
 public class TeleportRequest {
-    protected final ServerPlayerEntity source;
-    protected final ServerPlayerEntity target;
-    private final CommandContext<ServerCommandSource> context;
-    public TeleportRequest(ServerPlayerEntity source, ServerPlayerEntity target,  CommandContext<ServerCommandSource> context) {
+    protected final ServerPlayer source;
+    protected final ServerPlayer target;
+    private final CommandContext<CommandSourceStack> context;
+    public TeleportRequest(ServerPlayer source, ServerPlayer target,  CommandContext<CommandSourceStack> context) {
         this.source = source;
         this.target = target;
         this.context = context;
     }
     public void run() {
-        if (!source.isDisconnected() && !target.isDisconnected()) {
+        if (!source.hasDisconnected() && !target.hasDisconnected()) {
             executeTeleport();
         }
     }
     protected void executeTeleport() {
-        source.teleport(target.getEntityWorld(), target.getX(), target.getY(), target.getZ(), Set.of(), target.getYaw(), target.getPitch(),false);
+        source.teleportTo(target.level(), target.getX(), target.getY(), target.getZ(), Set.of(), target.getYRot(), target.getXRot(),false);
     }
     public void cancel() {}
 
-    public ServerPlayerEntity getSource() {
+    public ServerPlayer getSource() {
         return source;
     }
-    public ServerPlayerEntity getOwner() {return context.getSource().getPlayer();}
-    public ServerPlayerEntity getTarget() {
+    public ServerPlayer getOwner() {return context.getSource().getPlayer();}
+    public ServerPlayer getTarget() {
         return target;
     }
     private TeleportRequest getInstance() {

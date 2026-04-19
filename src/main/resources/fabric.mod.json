@@ -14,14 +14,11 @@
   "entrypoints": {
     "main": [
       "de.hallotheengineer.fabrictpa.FabricTPA"
-    ],
-    "server": [
-      "de.hallotheengineer.fabrictpa.FabricTPA"
     ]
   },
   "mixins": [],
   "depends": {
     "fabric": "*",
-    "minecraft": "${minecraft_version}"
+    "minecraft": "~${minecraft_version}"
   }
 }

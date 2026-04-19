@@ -1,19 +1,17 @@
 package de.hallotheengineer.fabrictpa.utils;
 
 import com.mojang.brigadier.context.CommandContext;
-import net.minecraft.network.packet.s2c.play.PositionFlag;
-import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.server.network.ServerPlayerEntity;
-
 import java.util.Set;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.server.level.ServerPlayer;
 
 public class TeleportHereRequest extends TeleportRequest {
-    public TeleportHereRequest(ServerPlayerEntity source, ServerPlayerEntity target, CommandContext<ServerCommandSource> context) {
+    public TeleportHereRequest(ServerPlayer source, ServerPlayer target, CommandContext<CommandSourceStack> context) {
         super(source, target, context);
     }
 
     @Override
     protected void executeTeleport() {
-        this.target.teleport(target.getEntityWorld(), source.getX(), source.getY(), source.getZ(), Set.of(), source.getYaw(), source.getPitch(), false);
+        this.target.teleportTo(target.level(), source.getX(), source.getY(), source.getZ(), Set.of(), source.getYRot(), source.getXRot(), false);
     }
 }

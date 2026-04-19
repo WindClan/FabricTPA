@@ -4,22 +4,22 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import de.hallotheengineer.fabrictpa.TeleportHandler;
 import de.hallotheengineer.fabrictpa.utils.TeleportRequest;
-import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
+import net.minecraft.ChatFormatting;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.network.chat.Component;
 
 public class TPAcceptCommand {
-    public static int exec(CommandContext<ServerCommandSource> context,String ownerUUID) throws CommandSyntaxException {
-        if (!checkRequests(context,ownerUUID)) context.getSource().sendFeedback(() -> Text.literal("You have no teleport requests!").formatted(Formatting.RED), false);
+    public static int exec(CommandContext<CommandSourceStack> context,String ownerUUID) throws CommandSyntaxException {
+        if (!checkRequests(context,ownerUUID)) context.getSource().sendSuccess(() -> Component.literal("You have no teleport requests!").withStyle(ChatFormatting.RED), false);
         return 1;
     }
-    private static boolean checkRequests(CommandContext<ServerCommandSource> context,String ownerUUID) throws CommandSyntaxException {
+    private static boolean checkRequests(CommandContext<CommandSourceStack> context,String ownerUUID) throws CommandSyntaxException {
         for (TeleportRequest request : TeleportHandler.getTpaRequests()) {
-            if (request.getTarget() == context.getSource().getPlayerOrThrow() && (ownerUUID == null || ownerUUID.equals(request.getOwner().getUuidAsString()))) {
+            if (request.getTarget() == context.getSource().getPlayerOrException() && (ownerUUID == null || ownerUUID.equals(request.getOwner().getStringUUID()))) {
                 request.run();
                 TeleportHandler.removeTPARequest(request);
-                request.getSource().sendMessage(Text.literal("Your request was accepted!").formatted(Formatting.GREEN));
-                request.getTarget().sendMessage(Text.literal("Request accepted.").formatted(Formatting.GRAY));
+                request.getSource().sendSystemMessage(Component.literal("Your request was accepted!").withStyle(ChatFormatting.GREEN));
+                request.getTarget().sendSystemMessage(Component.literal("Request accepted.").withStyle(ChatFormatting.GRAY));
                 return true;
             }
         }
